@@ -34,8 +34,18 @@ router.post('/', (req, res) => {
     .catch(err => res.status(500).json({ error: 'Failed to insert post' }));
 });
 
+// validate the data before calling the database
 router.put('/:id', (req, res) => {
-
+  // const id = req.params.id;
+  const changes = req.body
+  
+  knex('posts')
+    .where({ id: req.params.id })
+    .update(changes)
+    .then(count => {
+      res.status(200).json(count)
+    })
+    .catch(error => res.status(500).json({ error: 'Failed to delete post'}));
 });
 
 router.delete('/:id', (req, res) => {
